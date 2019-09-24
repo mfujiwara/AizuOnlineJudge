@@ -1,5 +1,5 @@
-# 3~2月の13日
-WEEK_OF_MONTHS=[5,1,3,6,1,4,7,2,5,7,2,4]
+# 3/1が index 曜日の時の １年間の 13th Fri の数
+NUM_OF_13FRI = [2, 1, 2, 1, 2, 2, 2]
 
 def weekOfDay(year, month, day)
     Time.gm(year, month, day).wday
@@ -25,24 +25,26 @@ if d2 >= 13
     end
 end
 
-period = (y2 - y1) / 2800
+period = (y2*100 - y1*100 + m2 - m1) / 280000
 ret = period * 4816
 y2 = y2 - period * 2800
 
 y = y1
 m = m1
 while true do
-    while true do
-        if y == y2 && m == m2
-            puts ret
-            exit
-        end
+    if y == y2 && m == m2
+        puts ret
+        break
+    elsif m == 3 && y2 > y && m2 > 2
+        ret += NUM_OF_13FRI[weekOfDay(y,3,1)]
+        y += 1
+    else
         ret += 1 if weekOfDay(y,m,13)==5
+
         m += 1
         if m == 13
+            y += 1
             m = 1
-            break
         end
     end
-    y += 1
 end
